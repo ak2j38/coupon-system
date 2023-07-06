@@ -1,6 +1,7 @@
 package com.ader.api.service;
 
 import com.ader.api.domain.Coupon;
+import com.ader.api.repository.CouponCountRepository;
 import com.ader.api.repository.CouponRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,10 +13,11 @@ import org.springframework.stereotype.Service;
 public class ApplyService {
 
     private final CouponRepository couponRepository;
+    private final CouponCountRepository couponCountRepository;
 
     public void applyCoupon(String userId) {
         try {
-            long count = couponRepository.count();
+            long count = couponCountRepository.increase();
 
             if (count > 100) {
                 return;
