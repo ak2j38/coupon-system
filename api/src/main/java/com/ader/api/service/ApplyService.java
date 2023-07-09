@@ -1,6 +1,7 @@
 package com.ader.api.service;
 
 import com.ader.api.domain.Coupon;
+import com.ader.api.producer.CouponCreateProducer;
 import com.ader.api.repository.CouponCountRepository;
 import com.ader.api.repository.CouponRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ public class ApplyService {
 
     private final CouponRepository couponRepository;
     private final CouponCountRepository couponCountRepository;
+    private final CouponCreateProducer couponCreateProducer;
 
     public void applyCoupon(String userId) {
         try {
@@ -23,7 +25,7 @@ public class ApplyService {
                 return;
             }
 
-            couponRepository.save(Coupon.of(userId));
+            couponCreateProducer.create(userId);
         }
         catch(Exception e) {
             log.error("쿠폰 응모 중 오류가 발생했습니다.", e);
