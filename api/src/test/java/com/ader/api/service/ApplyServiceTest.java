@@ -39,9 +39,10 @@ class ApplyServiceTest {
         CountDownLatch latch = new CountDownLatch(threadCount);
 
         for (int i = 0; i < threadCount; i++) {
-             executorService.submit(() -> {
+            int finalI = i;
+            executorService.submit(() -> {
                  try {
-                     applyService.applyCoupon("ader");
+                     applyService.applyCoupon("ader" + finalI);
                  } finally {
                      latch.countDown();
                  }
@@ -49,6 +50,8 @@ class ApplyServiceTest {
         }
 
         latch.await();
+
+        Thread.sleep(10000);
 
         long count = couponRepository.count();
 
