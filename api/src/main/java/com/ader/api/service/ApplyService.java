@@ -2,6 +2,7 @@ package com.ader.api.service;
 
 import com.ader.api.domain.Coupon;
 import com.ader.api.producer.CouponCreateProducer;
+import com.ader.api.repository.AppliedUserRepository;
 import com.ader.api.repository.CouponCountRepository;
 import com.ader.api.repository.CouponRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +17,16 @@ public class ApplyService {
     private final CouponRepository couponRepository;
     private final CouponCountRepository couponCountRepository;
     private final CouponCreateProducer couponCreateProducer;
+    private final AppliedUserRepository appliedUserRepository;
 
     public void applyCoupon(String userId) {
         try {
+            Long applyCount = appliedUserRepository.add(userId);
+
+            if (applyCount != 1) {
+                return;
+            }
+
             long count = couponCountRepository.increase();
 
             if (count > 100) {
